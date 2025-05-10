@@ -79,7 +79,7 @@
     }
 
     .logo i {
-      color: var(--secondary-color);
+      color: #ff00e1;
       margin-right: 8px;
     }
 
@@ -99,7 +99,7 @@
     }
 
     .navbar a:hover {
-      color: var(--secondary-color);
+      color: #ff00e1;
     }
 
     .navbar a::after {
@@ -107,7 +107,7 @@
       position: absolute;
       width: 0;
       height: 2px;
-      background: var(--secondary-color);
+      background: #ff00e1;
       bottom: -5px;
       left: 0;
       transition: width 0.3s ease;
@@ -141,14 +141,30 @@
       padding: 0 20px;
     }
 
-    .hero-content h1 {
-      font-size: 3.5rem;
-      margin-bottom: 20px;
-      background: linear-gradient(to right, #f8f9fa, var(--secondary-color));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: fadeInUp 1s ease;
-    }
+.hero-content h1 {
+  font-size: 3.5rem;
+  margin-bottom: 20px;
+  background: #00ffdd;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: #00ffdd;
+  animation: fadeInUp 1s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-content h1::before{
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: -20px;
+  right: -20px;
+  bottom: -10px;
+  background: rgba(0, 0, 0, 0.514);
+  filter: blur(8px);
+  z-index: -1;
+  border-radius: 12px;
+}
+
 
     .hero-content p {
       font-size: 1.2rem;
