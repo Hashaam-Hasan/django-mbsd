@@ -1,0 +1,19 @@
+# Django
+*.pyc
+__pycache__/
+db.sqlite3
+/static/
+media/
+
+# Environment
+env/
+venv/
+
+# Firebase or API keys (if any)
+*.json
+*.bin
+
+# OS/IDE
+.DS_Store
+.vscode/
+*.log

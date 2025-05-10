@@ -1,0 +1,1794 @@
+<!-- {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Home - MBSD</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      font-family: 'Segoe UI', sans-serif;
+      background:url("/static/images/imgg.webp") no-repeat center center/cover;
+      background-size: cover;
+    }
+
+    .navbar {
+      width: 100%;
+      padding: 20px 40px;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(12px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .navbar a {
+      text-decoration: none;
+      color: #fff;
+      margin-left: 25px;
+      font-size: 16px;
+      transition: color 0.3s ease;
+    }
+
+    .navbar a:hover {
+      color: #ccc;
+    }
+
+    .carousel-container {
+      margin-top: 100px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
+    .carousel {
+      width: 90%;
+      max-width: 1000px;
+      position: relative;
+      overflow: hidden;
+      border-radius: 20px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+    }
+
+    .carousel-image {
+      display: none;
+      width: 100%;
+      border-radius: 20px;
+    }
+
+    .carousel-image.active {
+      display: block;
+    }
+
+    .nav-button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: rgba(0, 0, 0, 0.6);
+      border: none;
+      color: white;
+      font-size: 24px;
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    .nav-button.prev {
+      left: 10px;
+    }
+
+    .nav-button.next {
+      right: 10px;
+    }
+
+    .container {
+      padding: 40px;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(8px);
+      border-radius: 20px;
+      margin: 40px auto;
+      width: 90%;
+      max-width: 800px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+    }
+
+    .datetime-row {
+      display: flex;
+      color: #fffffffd; /* bright cyan or choose any visible color */
+
+      justify-content: center;
+      gap: 40px;
+      margin-bottom: 20px;
+      font-size: 18px;
+    }
+
+    .temp, .humi {
+      margin: 20px 0;
+    }
+
+    .sensor-bars {
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(8px);
+      padding: 30px;
+      margin: 0 auto 40px;
+      width: 90%;
+      max-width: 800px;
+      border-radius: 20px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+    }
+
+    .bar-container {
+      background: rgba(255,255,255,0.1);
+      border-radius: 10px;
+      height: 20px;
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .full-bar {
+      width: 100%;
+      height: 100%;
+    }
+
+    .point {
+      position: absolute;
+      width: 15px;
+      height: 30px;
+      background-color: #ff8400;
+      top: -5px;
+      left: 0;
+      border-radius: 5px;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 14px;
+      background: rgba(0, 0, 0, 0.4);
+      border-top: 1px solid rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+    }
+
+    @media (max-width: 600px) {
+      .navbar {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .datetime-row {
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
+    .temp, .humi {
+      color: #d7c89efd; /* bright cyan or choose any visible color */
+      background-color: rgba(43, 42, 40, 0.445); /* dark background for contrast */
+      padding: 6px 12px; 
+      border-radius: 8px;
+      font-weight: bold;
+      display: inline-block;
+    }
+
+    
+  </style>
+</head>
+<body>
+
+  <header class="navbar">
+    <h2 class="logo">MBSD</h2>
+    <nav class="navbar-links">
+      <a href="{% url 'home' %}">Home</a>
+      <a href="{% url 'live' %}">Live Data</a>
+      <a href="{% url 'firmware:firmware_upload' %}">Firmware Update</a>
+      <a href="{% url 'details' %}">Details</a>
+      <a href="{% url 'about' %}">About</a>
+    </nav>
+  </header>
+
+  <section class="carousel-container">
+    <div class="carousel">
+      <img src="{% static 'images/esp32.jpg' %}" class="carousel-image active" alt="Image 1">
+      <img src="{% static 'images/images (1).jpg' %}" class="carousel-image" alt="Image 2">
+      <img src="{% static 'images/a.jpg' %}" class="carousel-image" alt="Image 3">
+      <img src="{% static 'images/b.jpg' %}" class="carousel-image" alt="Image 4">
+      <img src="{% static 'images/1.jpg' %}" class="carousel-image" alt="Image 5">
+      <img src="{% static 'images/6.jpg' %}" class="carousel-image" alt="Image 6">
+      <button class="nav-button prev">&#10094;</button>
+      <button class="nav-button next">&#10095;</button>
+    </div>
+  </section>
+
+  <main class="container">
+    <div class="datetime-row">
+      <span id="date"></span>
+      <span id="time"></span>
+    </div>
+
+    <h3>Details of Temperature and Humidity:</h3>
+
+    <div class="temp">
+      <h1>Temperature: <span id="temperature">{{ temperature }}</span></h1>
+    </div>
+
+    <div class="humi">
+      <h1>Humidity: <span id="humidity">{{ humidity }}</span></h1>
+    </div>
+  </main>
+
+  <section class="sensor-bars">
+    <h2>Range Bar Temp</h2>
+    <div class="bar-container">
+      <div id="temp-bar" class="full-bar"></div>
+      <div id="temp-point" class="point"></div>
+    </div>
+
+    <h2>Range Bar Hum</h2>
+    <div class="bar-container">
+      <div id="humi-bar" class="full-bar"></div>
+      <div id="humi-point" class="point"></div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>© 2025 MBSD | Live Monitoring Dashboard</p>
+  </footer>
+
+  <script src="{% static 'home.js' %}"></script>
+</body>
+</html> -->
+
+
+
+
+
+
+
+
+
+
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Home - MBSD Smart Monitoring</title>
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #3498db;
+      --secondary-color: #ff8400;
+      --accent-color: #2ecc71;
+      --dark-bg: rgba(0, 0, 0, 0.6);
+      --light-text: #f8f9fa;
+      --card-bg: rgba(25, 25, 35, 0.7);
+      --glass-effect: rgba(255, 255, 255, 0.05);
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: url("{% static 'images/imgg.webp' %}") no-repeat center center/cover fixed;
+      background-size: cover;
+      color: var(--light-text);
+      scroll-behavior: smooth;
+    }
+
+    /* Preloader Animation */
+    .preloader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #121212;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease-out;
+    }
+
+    .preloader.fade-out {
+      opacity: 0;
+    }
+
+    .preloader-icon {
+      width: 60px;
+      height: 60px;
+      border: 4px solid rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      border-top-color: var(--secondary-color);
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Navigation Bar */
+    .navbar {
+      width: 100%;
+      padding: 15px 40px;
+      background: rgba(10, 10, 15, 0.85);
+      backdrop-filter: blur(12px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 1px solid var(--glass-effect);
+      transition: all 0.3s ease;
+    }
+
+    .navbar.scrolled {
+      padding: 10px 40px;
+      background: rgba(10, 10, 15, 0.95);
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      letter-spacing: 1px;
+    }
+
+    .logo i {
+      color: var(--secondary-color);
+      margin-right: 8px;
+    }
+
+    .navbar-links {
+      display: flex;
+      align-items: center;
+    }
+
+    .navbar a {
+      text-decoration: none;
+      color: #fff;
+      margin-left: 30px;
+      font-size: 16px;
+      font-weight: 500;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .navbar a:hover {
+      color: var(--secondary-color);
+    }
+
+    .navbar a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      background: var(--secondary-color);
+      bottom: -5px;
+      left: 0;
+      transition: width 0.3s ease;
+    }
+
+    .navbar a:hover::after {
+      width: 100%;
+    }
+
+    .menu-toggle {
+      display: none;
+      cursor: pointer;
+      font-size: 24px;
+    }
+
+    /* Hero Section with Carousel */
+    .hero {
+      padding-top: 100px;
+      position: relative;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .hero-content {
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto 50px;
+      padding: 0 20px;
+    }
+
+    .hero-content h1 {
+      font-size: 3.5rem;
+      margin-bottom: 20px;
+      background: linear-gradient(to right, #f8f9fa, var(--secondary-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: fadeInUp 1s ease;
+    }
+
+    .hero-content p {
+      font-size: 1.2rem;
+      line-height: 1.6;
+      margin-bottom: 30px;
+      animation: fadeInUp 1.3s ease;
+    }
+
+    .cta-button {
+      display: inline-block;
+      padding: 12px 30px;
+      background: var(--secondary-color);
+      color: #fff;
+      border: none;
+      border-radius: 30px;
+      font-size: 16px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(255, 132, 0, 0.3);
+      cursor: pointer;
+      animation: fadeInUp 1.6s ease;
+    }
+
+    .cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(255, 132, 0, 0.5);
+    }
+
+    /* Carousel */
+    .carousel-container {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      position: relative;
+      margin-top: 30px;
+      animation: fadeIn 1.8s ease;
+    }
+
+    .carousel {
+      width: 90%;
+      max-width: 1000px;
+      position: relative;
+      overflow: hidden;
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+      aspect-ratio: 16/9;
+    }
+
+    .carousel-image {
+      display: none;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 20px;
+      transition: opacity 0.5s ease;
+    }
+
+    .carousel-image.active {
+      display: block;
+      animation: fadeIn 1s ease;
+    }
+
+    .nav-button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: rgba(0, 0, 0, 0.6);
+      border: none;
+      color: white;
+      font-size: 18px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      cursor: pointer;
+      opacity: 0.7;
+      transition: all 0.3s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .nav-button:hover {
+      opacity: 1;
+      background-color: var(--secondary-color);
+    }
+
+    .nav-button.prev {
+      left: 20px;
+    }
+
+    .nav-button.next {
+      right: 20px;
+    }
+
+    .carousel-indicators {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+    }
+
+    .indicator {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.5);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .indicator.active {
+      background: var(--secondary-color);
+      transform: scale(1.2);
+    }
+
+    /* Dashboard Section */
+    .dashboard {
+      padding: 80px 20px;
+      position: relative;
+    }
+
+    .dashboard::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(10, 10, 15, 0.8);
+      backdrop-filter: blur(5px);
+      z-index: -1;
+    }
+
+    .dashboard-header {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .dashboard-header h2 {
+      font-size: 2.5rem;
+      color: #fff;
+      margin-bottom: 20px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .dashboard-header h2::after {
+      content: '';
+      position: absolute;
+      width: 80px;
+      height: 3px;
+      background: var(--secondary-color);
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .info-card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+      border: 1px solid var(--glass-effect);
+      backdrop-filter: blur(10px);
+    }
+
+    .info-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+    }
+
+    .card-icon {
+      font-size: 32px;
+      color: var(--secondary-color);
+      margin-bottom: 20px;
+    }
+
+    .info-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+      color: #fff;
+    }
+
+    .info-card p {
+      color: #ccc;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    /* DateTime Display */
+    .datetime-row {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin-bottom: 30px;
+      font-size: 18px;
+      background: var(--card-bg);
+      padding: 15px 30px;
+      border-radius: 50px;
+      display: inline-flex;
+      border: 1px solid var(--glass-effect);
+    }
+
+    .datetime-row span {
+      display: flex;
+      align-items: center;
+    }
+
+    .datetime-row i {
+      margin-right: 8px;
+      color: var(--secondary-color);
+    }
+
+    /* Sensor Data Section */
+    .sensor-data {
+      padding: 30px;
+      margin: 0 auto 40px;
+      width: 90%;
+      max-width: 1000px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+
+    .sensor-card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 30px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--glass-effect);
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+
+    .sensor-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+    }
+
+    .sensor-icon {
+      font-size: 36px;
+      color: var(--secondary-color);
+      margin-bottom: 15px;
+    }
+
+    .sensor-card h3 {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+      color: #ccc;
+    }
+
+    .sensor-value {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      background: linear-gradient(to right, #f8f9fa, var(--secondary-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .status-normal {
+      background: rgba(46, 204, 113, 0.2);
+      color: #2ecc71;
+      border: 1px solid rgba(46, 204, 113, 0.3);
+    }
+
+    .status-warning {
+      background: rgba(241, 196, 15, 0.2);
+      color: #f1c40f;
+      border: 1px solid rgba(241, 196, 15, 0.3);
+    }
+
+    .status-alert {
+      background: rgba(231, 76, 60, 0.2);
+      color: #e74c3c;
+      border: 1px solid rgba(231, 76, 60, 0.3);
+    }
+
+    /* Gauge Charts */
+    .gauge-container {
+      width: 200px;
+      height: 200px;
+      margin: 0 auto 20px;
+      position: relative;
+    }
+
+    .gauge {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Range Bars */
+    .sensor-bars {
+      background: var(--card-bg);
+      padding: 40px;
+      margin: 0 auto 60px;
+      width: 90%;
+      max-width: 1000px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--glass-effect);
+      backdrop-filter: blur(10px);
+    }
+
+    .sensor-bars h2 {
+      font-size: 1.5rem;
+      margin-bottom: 25px;
+      color: #fff;
+      text-align: center;
+      position: relative;
+      display: inline-block;
+    }
+    
+    .sensor-bars h2::after {
+      content: '';
+      position: absolute;
+      width: 60px;
+      height: 3px;
+      background: var(--secondary-color);
+      bottom: -10px;
+      left: 0;
+    }
+
+    .bar-container {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      height: 30px;
+      margin-bottom: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bar-label {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      font-size: 14px;
+      color: #ccc;
+    }
+
+    .bar-label span:last-child {
+      font-weight: 600;
+      color: var(--secondary-color);
+    }
+
+    .full-bar {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to right, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.1));
+    }
+
+    .fill-bar {
+      position: absolute;
+      height: 100%;
+      top: 0;
+      left: 0;
+      border-radius: 10px;
+      transition: width 1s ease-out;
+    }
+
+    .temp-bar {
+      background: linear-gradient(to right, #3498db, #9b59b6);
+    }
+
+    .humi-bar {
+      background: linear-gradient(to right, #2ecc71, #3498db);
+    }
+
+    .point {
+      position: absolute;
+      width: 20px;
+      height: 40px;
+      background-color: var(--secondary-color);
+      top: -5px;
+      left: 0;
+      border-radius: 5px;
+      box-shadow: 0 3px 10px rgba(255, 132, 0, 0.5);
+      transition: left 1s ease-out;
+      z-index: 2;
+    }
+
+    .range-marks {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 5px;
+      padding: 0 10px;
+      font-size: 12px;
+      color: #aaa;
+    }
+
+    /* Features Section */
+    .features {
+      padding: 80px 20px;
+      background: rgba(10, 10, 15, 0.7);
+      backdrop-filter: blur(10px);
+    }
+
+    .features-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .features-header h2 {
+      font-size: 2.5rem;
+      color: #fff;
+      margin-bottom: 20px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .features-header h2::after {
+      content: '';
+      position: absolute;
+      width: 80px;
+      height: 3px;
+      background: var(--secondary-color);
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .feature-card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 30px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--glass-effect);
+      transition: all 0.3s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+    }
+
+    .feature-icon {
+      font-size: 40px;
+      color: var(--secondary-color);
+      margin-bottom: 20px;
+    }
+
+    .feature-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+      color: #fff;
+    }
+
+    .feature-card p {
+      color: #ccc;
+      line-height: 1.6;
+    }
+
+    /* Call to Action */
+    .cta-section {
+      padding: 80px 20px;
+      text-align: center;
+      position: relative;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(10, 10, 15, 0.8);
+      backdrop-filter: blur(5px);
+      z-index: -1;
+    }
+
+    .cta-content {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .cta-content h2 {
+      font-size: 2.5rem;
+      color: #fff;
+      margin-bottom: 20px;
+    }
+
+    .cta-content p {
+      color: #ccc;
+      font-size: 1.2rem;
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 40px 20px;
+      background: rgba(10, 10, 15, 0.9);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 40px;
+      text-align: left;
+    }
+
+    .footer-logo {
+      font-size: 22px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+    }
+
+    .footer-logo i {
+      color: var(--secondary-color);
+      margin-right: 8px;
+    }
+
+    .footer-about p {
+      color: #ccc;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .footer-links h4, .footer-contact h4 {
+      color: #fff;
+      margin-bottom: 20px;
+      font-size: 18px;
+      position: relative;
+      padding-bottom: 10px;
+    }
+
+    .footer-links h4::after, .footer-contact h4::after {
+      content: '';
+      position: absolute;
+      width: 50px;
+      height: 2px;
+      background: var(--secondary-color);
+      bottom: 0;
+      left: 0;
+    }
+
+    .footer-links ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .footer-links li {
+      margin-bottom: 10px;
+    }
+
+    .footer-links a {
+      color: #ccc;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      display: flex;
+      align-items: center;
+    }
+
+    .footer-links a i {
+      margin-right: 8px;
+      color: var(--secondary-color);
+    }
+
+    .footer-links a:hover {
+      color: var(--secondary-color);
+    }
+
+    .footer-contact p {
+      color: #ccc;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: flex-start;
+    }
+
+    .footer-contact i {
+      margin-right: 10px;
+      color: var(--secondary-color);
+      margin-top: 5px;
+    }
+
+    .social-icons {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .social-icons a {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+
+    .social-icons a:hover {
+      background: var(--secondary-color);
+      transform: translateY(-3px);
+    }
+
+    .footer-bottom {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      color: #aaa;
+      font-size: 14px;
+    }
+
+    /* Back to Top Button */
+    .back-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 50px;
+      height: 50px;
+      background: var(--secondary-color);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 20px;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      z-index: 999;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .back-to-top:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    .animate-fadeIn {
+      animation: fadeIn 1s ease forwards;
+    }
+
+    .animate-fadeInUp {
+      animation: fadeInUp 1s ease forwards;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 992px) {
+      .hero-content h1 {
+        font-size: 2.8rem;
+      }
+      
+      .carousel {
+        width: 95%;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .navbar {
+        padding: 15px 20px;
+      }
+      
+      .navbar-links {
+        position: fixed;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        background: rgba(10, 10, 15, 0.95);
+        flex-direction: column;
+        padding: 20px 0;
+        clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+        transition: all 0.5s ease;
+      }
+      
+      .navbar-links.active {
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+      }
+      
+      .navbar a {
+        margin: 10px 0;
+      }
+      
+      .menu-toggle {
+        display: block;
+      }
+      
+      .hero-content h1 {
+        font-size: 2.2rem;
+      }
+      
+      .hero-content p {
+        font-size: 1rem;
+      }
+      
+      .datetime-row {
+        flex-direction: column;
+        gap: 10px;
+        padding: 15px;
+      }
+      
+      .sensor-bars,
+      .dashboard-grid {
+        padding: 20px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .hero-content h1 {
+        font-size: 1.8rem;
+      }
+      
+      .sensor-card,
+      .feature-card,
+      .info-card {
+        padding: 20px;
+      }
+      
+      .footer-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      
+      .footer-links h4::after, 
+      .footer-contact h4::after {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      
+      .footer-contact p,
+      .footer-links a {
+        justify-content: center;
+      }
+      
+      .social-icons {
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Preloader -->
+  <div class="preloader">
+    <div class="preloader-icon"></div>
+  </div>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <h2 class="logo"><i class="fas fa-microchip"></i> MBSD</h2>
+    <div class="menu-toggle" id="mobile-menu">
+      <i class="fas fa-bars"></i>
+    </div>
+    <nav class="navbar-links">
+      <a href="{% url 'home' %}" class="active"><i class="fas fa-home"></i> Home</a>
+      <a href="{% url 'live' %}"><i class="fas fa-chart-line"></i> Live Data</a>
+      <a href="{% url 'firmware:firmware_upload' %}"><i class="fas fa-upload"></i> Firmware Update</a>
+      <a href="{% url 'details' %}"><i class="fas fa-info-circle"></i> Details</a>
+      <a href="{% url 'about' %}"><i class="fas fa-users"></i> About</a>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content animate-fadeInUp">
+      <h1>Smart Environment Monitoring</h1>
+      <p>Real-time temperature and humidity monitoring with advanced analytics and notifications for optimal environmental control.</p>
+      <a href="{% url 'live' %}" class="cta-button"><i class="fas fa-chart-line"></i> View Live Data</a>
+    </div>
+    
+    <!-- Carousel -->
+    <section class="carousel-container">
+      <div class="carousel">
+        <img src="{% static 'E:\MyProjects\MBSD\fire_web\monitoring\static\images\1.jpg' %}" class="carousel-image active" alt="ESP32 Monitoring System">
+        <img src="{% static 'E:\MyProjects\MBSD\fire_web\monitoring\static\images\2.jpg' %}" class="carousel-image" alt="Temperature Sensor">
+        <img src="{% static 'E:\MyProjects\MBSD\fire_web\monitoring\static\images\3.webp' %}" class="carousel-image" alt="Humidity Monitor">
+        <!-- <img src="{% static 'images/b.jpg' %}" class="carousel-image" alt="IoT Dashboard"> -->
+        <img src="{% static 'E:\MyProjects\MBSD\fire_web\monitoring\static\images\4.jpg' %}" class="carousel-image" alt="Smart Home Integration">
+        <img src="{% static 'E:\MyProjects\MBSD\fire_web\monitoring\static\images\5.jpg' %}" class="carousel-image" alt="Data Analytics">
+        
+        <button class="nav-button prev"><i class="fas fa-chevron-left"></i></button>
+        <button class="nav-button next"><i class="fas fa-chevron-right"></i></button>
+        
+        <div class="carousel-indicators">
+          <div class="indicator active" data-index="0"></div>
+          <div class="indicator" data-index="1"></div>
+          <div class="indicator" data-index="2"></div>
+          <div class="indicator" data-index="3"></div>
+          <div class="indicator" data-index="4"></div>
+          <div class="indicator" data-index="5"></div>
+        </div>
+      </div>
+    </section>
+  </section>
+
+  <!-- Dashboard Section -->
+  <section class="dashboard">
+    <div class="dashboard-header">
+      <h2>Real-Time Monitoring Dashboard</h2>
+      <div class="datetime-row">
+        <span><i class="far fa-calendar-alt"></i> <span id="date">Loading...</span></span>
+        <span><i class="far fa-clock"></i> <span id="time">Loading...</span></span>
+      </div>
+    </div>
+    
+    <!-- Sensor Data Display -->
+    <div class="sensor-data">
+      <!-- Temperature Card -->
+      <div class="sensor-card" data-aos="fade-up">
+        <div class="sensor-icon">
+          <i class="fas fa-temperature-high"></i>
+        </div>
+        <h3>Temperature</h3>
+        <div class="sensor-value" id="temperature">{{ temperature }}</div>
+        <div class="status-badge status-normal" id="temp-status">Normal</div>
+        <div class="gauge-container">
+          <canvas id="temp-gauge" class="gauge"></canvas>
+        </div>
+      </div>
+      
+      <!-- Humidity Card -->
+      <div class="sensor-card" data-aos="fade-up" data-aos-delay="100">
+        <div class="sensor-icon">
+          <i class="fas fa-tint"></i>
+        </div>
+        <h3>Humidity</h3>
+        <div class="sensor-value" id="humidity">{{ humidity }}</div>
+        <div class="status-badge status-normal" id="humidity-status">Normal</div>
+        <div class="gauge-container">
+          <canvas id="humidity-gauge" class="gauge"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Range Bars -->
+    <section class="sensor-bars">
+      <h2>Temperature Range</h2>
+      <div class="bar-label">
+        <span>Temperature Level</span>
+        <span id="temp-value">{{ temperature }}</span>
+      </div>
+      <div class="bar-container">
+        <div class="full-bar"></div>
+        <div id="temp-fill" class="fill-bar temp-bar" style="width: 50%;"></div>
+        <div id="temp-point" class="point" style="left: 50%;"></div>
+      </div>
+      <div class="range-marks">
+        <span>0°C</span>
+        <span>10°C</span>
+        <span>20°C</span>
+        <span>30°C</span>
+        <span>40°C</span>
+        <span>50°C</span>
+      </div>
+
+      <h2>Humidity Range</h2>
+      <div class="bar-label">
+        <span>Humidity Level</span>
+        <span id="humi-value">{{ humidity }}</span>
+      </div>
+      <div class="bar-container">
+        <div class="full-bar"></div>
+        <div id="humi-fill" class="fill-bar humi-bar" style="width: 65%;"></div>
+        <div id="humi-point" class="point" style="left: 65%;"></div>
+      </div>
+      <div class="range-marks">
+        <span>0%</span>
+        <span>20%</span>
+        <span>40%</span>
+        <span>60%</span>
+        <span>80%</span>
+        <span>100%</span>
+      </div>
+    </section>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features">
+    <div class="features-header">
+      <h2>Key Features</h2>
+    </div>
+    <div class="features-grid">
+      <!-- Feature 1 -->
+      <div class="feature-card" data-aos="fade-up">
+        <div class="feature-icon">
+          <i class="fas fa-chart-line"></i>
+        </div>
+        <h3>Real-Time Monitoring</h3>
+        <p>Track temperature and humidity levels in real-time with instant updates and precise measurements.</p>
+      </div>
+      
+      <!-- Feature 2 -->
+      <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+        <div class="feature-icon">
+          <i class="fas fa-bell"></i>
+        </div>
+        <h3>Alert System</h3>
+        <p>Receive immediate notifications when environmental conditions exceed your predefined thresholds.</p>
+      </div>
+      
+      <!-- Feature 3 -->
+      <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+        <div class="feature-icon">
+          <i class="fas fa-history"></i>
+        </div>
+        <h3>Historical Data</h3>
+        <p>Access and analyze historical environmental data to identify patterns and trends over time.</p>
+      </div>
+      
+      <!-- Feature 4 -->
+      <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+        <div class="feature-icon">
+          <i class="fas fa-mobile-alt"></i>
+        </div>
+        <h3>Mobile Responsive</h3>
+        <p>Monitor your environment from anywhere using our fully responsive mobile interface.</p>
+      </div>
+      
+      <!-- Feature 5 -->
+      <div class="feature-card" data-aos="fade-up" data-aos-delay="400">
+        <div class="feature-icon">
+          <i class="fas fa-upload"></i>
+        </div>
+        <h3>Remote Updates</h3>
+        <p>Easily update firmware and system settings remotely without physical access to the device.</p>
+      </div>
+      
+      <!-- Feature 6 -->
+      <div class="feature-card" data-aos="fade-up" data-aos-delay="500">
+        <div class="feature-icon">
+          <i class="fas fa-shield-alt"></i>
+        </div>
+        <h3>Secure Access</h3>
+        <p>Protect your data with advanced security features and controlled user access management.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="cta-section">
+    <div class="cta-content">
+      <h2>Ready to Monitor Your Environment?</h2>
+      <p>Get started with our real-time monitoring system today and take control of your environmental conditions.</p>
+      <a href="{% url 'live' %}" class="cta-button"><i class="fas fa-chart-line"></i> View Live Dashboard</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-about">
+        <div class="footer-logo"><i class="fas fa-microchip"></i> MBSD</div>
+        <p>MBSD projects provides cutting-edge environmental monitoring solutions for smart homes, industrial applications, and more.</p>
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#"><i class="fab fa-github"></i></a>
+        </div>
+      </div>
+      
+      <div class="footer-links">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="{% url 'home' %}"><i class="fas fa-chevron-right"></i> Home</a></li>
+          <li><a href="{% url 'live' %}"><i class="fas fa-chevron-right"></i> Live Data</a></li>
+          <li><a href="{% url 'firmware:firmware_upload' %}"><i class="fas fa-chevron-right"></i> Firmware Update</a></li>
+          <li><a href="{% url 'details' %}"><i class="fas fa-chevron-right"></i> Details</a></li>
+          <li><a href="{% url 'about' %}"><i class="fas fa-chevron-right"></i> About</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-contact">
+        <h4>Contact Us</h4>
+        <p><i class="fas fa-map-marker-alt"></i> NED, Karachi City</p>
+        <p><i class="fas fa-phone"></i> +92-316-6365117</p>
+        <p><i class="fas fa-envelope"></i> m.hashaamhasan@gmail.com</p>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p>&copy; 2025 MBSD | Smart Environment Monitoring Dashboard</p>
+    </div>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <div class="back-to-top" id="backToTop">
+    <i class="fas fa-arrow-up"></i>
+  </div>
+
+  <!-- JavaScript Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+  <script src="{% static 'home.js' %}"></script>
+  <script>
+    // Preloader
+    window.addEventListener('load', function() {
+      const preloader = document.querySelector('.preloader');
+      preloader.classList.add('fade-out');
+      setTimeout(() => {
+        preloader.style.display = 'none';
+      }, 500);
+    });
+
+    // Mobile Menu Toggle
+    document.getElementById('mobile-menu').addEventListener('click', function() {
+      document.querySelector('.navbar-links').classList.toggle('active');
+      
+      // Toggle icon between bars and times
+      const icon = this.querySelector('i');
+      if (icon.classList.contains('fa-bars')) {
+        icon.classList.remove('fa-bars');
+        icon.classList.add('fa-times');
+      } else {
+        icon.classList.remove('fa-times');
+        icon.classList.add('fa-bars');
+      }
+    });
+
+    // Back to Top Button
+    window.addEventListener('scroll', function() {
+      const backToTop = document.getElementById('backToTop');
+      if (window.scrollY > 300) {
+        backToTop.classList.add('visible');
+      } else {
+        backToTop.classList.remove('visible');
+      }
+      
+      // Navbar style changes on scroll
+      const navbar = document.querySelector('.navbar');
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+
+    document.getElementById('backToTop').addEventListener('click', function() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+
+    // Carousel
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.carousel-image');
+    const indicators = document.querySelectorAll('.indicator');
+    const totalSlides = slides.length;
+
+    function showSlide(n) {
+      // Hide all slides
+      slides.forEach(slide => {
+        slide.classList.remove('active');
+      });
+      
+      // Remove active class from all indicators
+      indicators.forEach(indicator => {
+        indicator.classList.remove('active');
+      });
+      
+      // Calculate the index with wrap-around
+      currentSlide = (n + totalSlides) % totalSlides;
+      
+      // Show the current slide
+      slides[currentSlide].classList.add('active');
+      indicators[currentSlide].classList.add('active');
+    }
+
+    // Next/Previous controls
+    document.querySelector('.nav-button.next').addEventListener('click', () => {
+      showSlide(currentSlide + 1);
+    });
+
+    document.querySelector('.nav-button.prev').addEventListener('click', () => {
+      showSlide(currentSlide - 1);
+    });
+
+    // Indicator clicks
+    indicators.forEach((indicator, index) => {
+      indicator.addEventListener('click', () => {
+        showSlide(index);
+      });
+    });
+
+    // Auto slide
+    setInterval(() => {
+      showSlide(currentSlide + 1);
+    }, 5000);
+
+    // Date and Time
+    function updateDateTime() {
+      const now = new Date();
+      
+      // Format date
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      const dateStr = now.toLocaleDateString('en-US', options);
+      
+      // Format time
+      const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      
+      document.getElementById('date').textContent = dateStr;
+      document.getElementById('time').textContent = timeStr;
+    }
+
+    // Update date and time initially and then every second
+    updateDateTime();
+    setInterval(updateDateTime, 1000);
+
+    // Initialize gauge charts
+    function initGauges() {
+      // Temperature gauge
+      const tempGauge = new Chart(document.getElementById('temp-gauge'), {
+        type: 'doughnut',
+        data: {
+          datasets: [{
+            data: [60, 40],
+            backgroundColor: [
+              'rgba(255, 132, 0, 0.8)',
+              'rgba(255, 255, 255, 0.1)'
+            ],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          cutout: '70%',
+          rotation: -90,
+          circumference: 180,
+          plugins: {
+            tooltip: {
+              enabled: false
+            },
+            legend: {
+              display: false
+            }
+          },
+          animation: {
+            animateRotate: true,
+            animateScale: true
+          }
+        }
+      });
+      
+      // Humidity gauge
+      const humidityGauge = new Chart(document.getElementById('humidity-gauge'), {
+        type: 'doughnut',
+        data: {
+          datasets: [{
+            data: [65, 35],
+            backgroundColor: [
+              'rgba(52, 152, 219, 0.8)',
+              'rgba(255, 255, 255, 0.1)'
+            ],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          cutout: '70%',
+          rotation: -90,
+          circumference: 180,
+          plugins: {
+            tooltip: {
+              enabled: false
+            },
+            legend: {
+              display: false
+            }
+          },
+          animation: {
+            animateRotate: true,
+            animateScale: true
+          }
+        }
+      });
+      
+      // Function to update temperature gauge
+      window.updateTempGauge = function(value) {
+        // Normalize value to 0-100 range
+        const normalizedValue = Math.min(Math.max(value, 0), 100);
+        tempGauge.data.datasets[0].data = [normalizedValue, 100 - normalizedValue];
+        tempGauge.update();
+        
+        // Update status badge
+        const tempStatus = document.getElementById('temp-status');
+        if (normalizedValue < 30) {
+          tempStatus.className = 'status-badge status-normal';
+          tempStatus.textContent = 'Normal';
+        } else if (normalizedValue < 70) {
+          tempStatus.className = 'status-badge status-warning';
+          tempStatus.textContent = 'Warning';
+        } else {
+          tempStatus.className = 'status-badge status-alert';
+          tempStatus.textContent = 'Alert';
+        }
+      };
+      
+      // Function to update humidity gauge
+      window.updateHumidityGauge = function(value) {
+        // Normalize value to 0-100 range
+        const normalizedValue = Math.min(Math.max(value, 0), 100);
+        humidityGauge.data.datasets[0].data = [normalizedValue, 100 - normalizedValue];
+        humidityGauge.update();
+        
+        // Update status badge
+        const humidityStatus = document.getElementById('humidity-status');
+        if (normalizedValue > 30 && normalizedValue < 70) {
+          humidityStatus.className = 'status-badge status-normal';
+          humidityStatus.textContent = 'Normal';
+        } else if (normalizedValue > 20 && normalizedValue < 80) {
+          humidityStatus.className = 'status-badge status-warning';
+          humidityStatus.textContent = 'Warning';
+        } else {
+          humidityStatus.className = 'status-badge status-alert';
+          humidityStatus.textContent = 'Alert';
+        }
+      };
+    }
+
+    // Initialize gauges when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      initGauges();
+      
+      // Get temperature and humidity values from Django template
+      const temperature = document.getElementById('temperature').textContent;
+      const humidity = document.getElementById('humidity').textContent;
+      
+      // Parse values (handle cases where they might be "N/A" or similar)
+      const tempValue = parseFloat(temperature) || 0;
+      const humValue = parseFloat(humidity) || 0;
+      
+      // Update gauges with initial values
+      updateTempGauge(tempValue);
+      updateHumidityGauge(humValue);
+      
+      // Update range bars
+      updateRangeBars(tempValue, humValue);
+    });
+
+    // Function to update range bars
+    function updateRangeBars(temp, hum) {
+      // Temperature is usually 0-50°C, so normalize to 0-100%
+      const tempPercent = (temp / 50) * 100;
+      const tempPosition = Math.min(Math.max(tempPercent, 0), 100);
+      
+      // Humidity is already 0-100%
+      const humPosition = Math.min(Math.max(hum, 0), 100);
+      
+      // Update temperature bar
+      document.getElementById('temp-fill').style.width = tempPosition + '%';
+      document.getElementById('temp-point').style.left = tempPosition + '%';
+      document.getElementById('temp-value').textContent = temp + '°C';
+      
+      // Update humidity bar
+      document.getElementById('humi-fill').style.width = humPosition + '%';
+      document.getElementById('humi-point').style.left = humPosition + '%';
+      document.getElementById('humi-value').textContent = hum + '%';
+    }
+
+    // Simulate data updates (for demo purposes)
+    function simulateDataUpdates() {
+      // Generate random temperature between 20-30°C
+      const newTemp = Math.floor(Math.random() * 10) + 20;
+      
+      // Generate random humidity between 40-70%
+      const newHum = Math.floor(Math.random() * 30) + 40;
+      
+      // Update displayed values
+      document.getElementById('temperature').textContent = newTemp + '°C';
+      document.getElementById('humidity').textContent = newHum + '%';
+      
+      // Update gauges
+      if (window.updateTempGauge && window.updateHumidityGauge) {
+        updateTempGauge(newTemp);
+        updateHumidityGauge(newHum);
+      }
+      
+      // Update range bars
+      updateRangeBars(newTemp, newHum);
+    }
+
+    // Simulate data updates every 5 seconds
+    setInterval(simulateDataUpdates, 5000);
+
+    // Add scroll reveal animations
+    function revealOnScroll() {
+      const elementsToReveal = document.querySelectorAll('.feature-card, .sensor-card, .info-card');
+      
+      elementsToReveal.forEach(element => {
+        const elementTop = element.getBoundingClientRect().top;
+        const windowHeight = window.innerHeight;
+        
+        if (elementTop < windowHeight - 100) {
+          element.classList.add('animate-fadeInUp');
+        }
+      });
+    }
+
+    // Add scroll event listener
+    window.addEventListener('scroll', revealOnScroll);
+    // Initial check
+    revealOnScroll();
+  </script>
+</body>
+</html>
