@@ -196,18 +196,20 @@
     /* Navbar Styling */
     .navbar {
       width: 100%;
-      padding: 20px 40px;
-      background: rgba(0, 0, 0, 0.6);
-      backdrop-filter: blur(16px);
+      padding: 15px 20px;
+      background: rgba(10, 10, 15, 0.85);
+      backdrop-filter: blur(12px);
       display: flex;
       justify-content: space-between;
       align-items: center;
       position: fixed;
       top: 0;
       z-index: 1000;
-      border-bottom: 1px solid var(--border-color);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      border-bottom: 1px solid var(--glass-effect);
       transition: all 0.3s ease;
+      box-sizing: border-box; /* Ensures padding doesn't overflow */
+      overflow-x: auto;       /* Allows scrolling if needed */
+      flex-wrap: wrap;        /* Enables wrapping if space is tight */
     }
 
     .navbar.scrolled {
